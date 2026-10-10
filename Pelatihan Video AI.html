@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Storybord Video AI</title>
+<style>
+.ag{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.ag .card{margin:0;display:flex;flex-direction:column;gap:8px}.ag p{margin:0;color:var(--t2);font-size:14px;flex:1}.ag a.b{margin:0;text-align:center}.ag.sm2 .card{padding:14px}
+.row{display:flex;gap:6px;align-items:stretch}.row>.sel,.row>input{flex:1}.sel{padding:9px 11px;border:1px solid #CBD2DA;border-radius:10px;background:#fff;font:inherit;text-align:left;cursor:pointer;color:var(--t)}.ib{border:1px solid #CBD2DA;background:#fff;border-radius:10px;padding:0 10px;cursor:pointer;color:var(--p)}.ib .ic{margin:0}.dd{position:relative}.pop{position:absolute;z-index:6;left:0;right:48px;max-height:320px;overflow:auto;background:#fff;border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);list-style:none;margin:4px 0 0;padding:4px}.pop li{display:flex;align-items:center}.pk{flex:1;border:0;background:none;text-align:left;padding:8px 10px;font:inherit;cursor:pointer;border-radius:8px;color:var(--t)}.pk:hover,.pk.on{background:var(--bg)}.pk.on{font-weight:600}dialog{border:0;border-radius:16px;max-width:540px;width:calc(100% - 32px);padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);color:var(--t)}dialog::backdrop{background:rgba(0,0,0,.45)}dialog h3{margin:0 0 8px}.x{float:right;padding:6px 8px}
+.ic{width:18px;height:18px;flex:none;vertical-align:-4px;margin-right:6px}.nb span{display:flex;align-items:center}
+:root{--p:#C62828;--a:#E53935;--bg:#F5F6F8;--s:#fff;--t:#1F2937;--t2:#6B7280;--ok:#16A34A;--w:#D97706;--er:#DC2626;--bd:#E5E7EB}
+*{box-sizing:border-box}html{height:100%}body{margin:0;font:15px/1.55 system-ui,"Segoe UI",sans-serif;background:var(--bg);color:var(--t);display:flex;min-height:100%}
+aside{width:270px;background:var(--s);border-right:1px solid var(--bd);padding:16px 12px;overflow:auto;position:fixed;inset:0 auto 0 0;z-index:5}
+aside h1{font-size:18px;margin:4px 8px 0;color:var(--p)}aside small{display:block;margin:0 8px 12px;color:var(--t2)}
+aside h2{font-size:12px;color:var(--t2);margin:14px 8px 4px;font-weight:600}
+.nb{display:flex;justify-content:space-between;gap:6px;width:100%;text-align:left;border:0;background:none;padding:8px 10px;border-radius:10px;font:inherit;color:var(--t);cursor:pointer}
+.nb:hover{background:var(--bg)}.nb.on{background:var(--p);color:#fff}.nb em{font-style:normal;font-size:12px;opacity:.8}
+main{margin-left:270px;flex:1;min-width:0}
+header{position:sticky;top:0;z-index:4;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd);padding:10px 20px;display:flex;align-items:center;gap:12px}
+header span{flex:1;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#menu{display:none}
+#pg{height:6px;background:var(--bd);width:120px;border-radius:9px;overflow:hidden}#pg i{display:block;height:100%;background:var(--a);width:0}
+#v{padding:20px;max-width:880px}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card h3{margin:0 0 8px;font-size:16px}label,legend{display:block;font-weight:600;margin:12px 0 4px}label b,legend b{color:var(--er)}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid #CBD2DA;border-radius:10px;font:inherit;background:#fff;color:var(--t)}
+textarea{resize:vertical}fieldset{border:0;padding:0;margin:0}.ck{display:inline-flex;align-items:center;gap:6px;margin:3px 12px 3px 0;font-weight:400}.ck input{width:auto}
+.ds{font-size:13.5px;color:var(--t2);background:var(--bg);border-radius:10px;padding:8px 10px;margin-top:6px}.ds:empty{display:none}
+button.b,a.b{display:inline-block;background:var(--p);color:#fff;border:0;border-radius:10px;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer;margin:4px 6px 4px 0;text-decoration:none}
+button.g{background:#fff;color:var(--p);border:1px solid var(--p)}
+:focus-visible{outline:3px solid #1D4ED8;outline-offset:2px}
+.tag{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:600;font-size:13px;border:1px solid}
+.Siap{color:var(--ok)}.Perlu{color:var(--w)}.Belum{color:var(--er)}
+.l{margin:6px 0;padding-left:18px}.sm{white-space:pre-wrap;font-size:14px}
+#out{min-height:320px;font:13px/1.5 ui-monospace,Menlo,monospace}
+#toast{position:fixed;bottom:16px;right:16px;background:var(--t);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:opacity .2s;z-index:9}#toast.on{opacity:1}
+@media(max-width:800px){aside{transform:translateX(-100%);transition:transform .2s}aside.open{transform:none}main{margin:0}#menu{display:block}#pg{width:70px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<aside id="sb" aria-label="Navigasi"></aside>
+<main><header><button class="b g" id="menu" aria-label="Buka menu navigasi">Menu</button><span id="ttl">Storybord Video AI</span><div id="pg" title="Progres wajib"><i></i></div><small id="sv" aria-live="polite"></small></header>
+<div id="v"></div></main><dialog id="dlg" aria-labelledby="dt"></dialog><div id="toast" role="status" aria-live="polite"></div>
+<script>
+const K=s=>s.trim().split('\n').map(x=>{const[a,b,c]=x.trim().split('|');return{id:a.toLowerCase().replace(/[^a-z0-9]+/g,'-'),label:a,description:b||'',frag:c||''}});
+const C={
+ctype:K(`Edukasi|Video yang mengajarkan materi atau keterampilan
+Konten media sosial|Video pendek untuk Reels, TikTok, atau Shorts
+Explainer video|Penjelasan singkat tentang konsep atau proses rumit
+Cerita fiksi|Kisah rekaan dengan tokoh, konflik, dan akhir
+Dongeng anak|Cerita imajinatif bernuansa moral untuk anak
+Tutorial|Panduan langkah demi langkah
+Promosi produk|Pengenalan produk atau jasa dan manfaatnya
+Motivasi|Pesan penyemangat lewat kisah atau narasi
+Sejarah|Penceritaan peristiwa atau tokoh masa lalu
+Animasi Islami|Cerita bernilai akhlak dan ajaran Islam
+Iklan layanan masyarakat|Ajakan peduli pada isu sosial
+Komedi|Hiburan yang mengutamakan humor
+Dokumenter|Penyajian fakta dan kisah nyata
+Biografi|Perjalanan hidup seorang tokoh
+Sains populer|Sains dijelaskan dengan bahasa awam
+Video musik|Visual yang mengiringi lagu
+Storytelling emosional|Cerita yang menyentuh perasaan`),
+genre:K(`Petualangan|Perjalanan penuh rintangan dan penemuan
+Komedi|Mengandalkan situasi dan karakter lucu
+Fantasi|Dunia sihir dan makhluk imajinatif
+Drama|Konflik emosional antar tokoh
+Edukasi|Pengetahuan disampaikan lewat cerita
+Inspiratif|Kisah berjuang dan bangkit
+Misteri|Teka-teki yang diungkap perlahan
+Slice of life|Potongan keseharian yang sederhana
+Aksi|Adegan cepat dan menegangkan
+Fiksi ilmiah|Teknologi dan masa depan
+Keluarga|Cerita hangat tentang hubungan keluarga
+Sejarah|Berlatar peristiwa masa lalu
+Religi|Bernuansa nilai keagamaan
+Thriller|Ketegangan terus meningkat
+Horor ringan|Seram ringan yang aman untuk umum`),
+approach:K(`Naratif|Cerita dituturkan satu narator
+Dialog|Tokoh saling berbicara
+Monolog|Satu tokoh berbicara kepada penonton
+Presenter|Pembawa acara memandu isi
+Tanya jawab|Pertanyaan dijawab bergantian
+Tutorial langkah demi langkah|Instruksi berurutan
+Studi kasus|Contoh nyata dibahas rinci
+Pemecahan masalah|Masalah diselesaikan bertahap
+Cerita dengan pesan moral|Cerita diakhiri pelajaran
+Demonstrasi|Cara kerja diperagakan
+Eksperimen|Percobaan dan hasilnya
+Wawancara|Narasumber menjawab pertanyaan`),
+goal:K(`Mengedukasi|Penonton memahami materi baru
+Menghibur|Penonton senang dan terhibur
+Mempromosikan|Penonton tertarik pada produk atau layanan
+Menginspirasi|Penonton termotivasi bertindak
+Menjelaskan proses|Penonton paham urutan kerja
+Bercerita|Menyampaikan kisah yang berkesan
+Membangun kesadaran|Penonton peduli pada suatu isu
+Berdakwah|Menyampaikan nilai keagamaan dengan santun
+Melatih keterampilan|Penonton bisa mempraktikkan sesuatu
+Membangun merek|Penonton mengenal identitas merek
+Mengajak bertindak|Penonton melakukan aksi tertentu
+Mendokumentasikan|Merekam peristiwa atau proses
+Meyakinkan|Mengubah pandangan penonton
+Menghibur sambil belajar|Gabungan hiburan dan edukasi
+Memotivasi|Menumbuhkan semangat penonton`),
+audience:K(`Masyarakat umum|Beragam usia, bahasa netral
+Remaja|SMP-SMA; menyukai gaya modern
+Mahasiswa|Mampu mencerna materi kompleks
+SD kelas tinggi|Usia 9-12 tahun
+SD kelas rendah|Usia 6-9 tahun
+Anak usia dini|Usia 3-6 tahun
+Guru|Pendidik yang butuh materi ajar
+Orang tua|Peduli pengasuhan dan keluarga
+Pekerja profesional|Dewasa bekerja, butuh isi ringkas
+Calon pelanggan|Orang yang menimbang membeli
+Pemilik usaha kecil|Pelaku UMKM
+Komunitas hobi|Penggemar bidang tertentu
+Karyawan baru|Peserta orientasi atau pelatihan
+Santri|Pelajar pesantren
+Lansia|Usia lanjut; tempo lambat dan teks besar`),
+tone:K(`Hangat|Ramah dan akrab
+Santai|Seperti mengobrol
+Ceria|Penuh semangat
+Inspiratif|Membangkitkan semangat
+Humoris|Memancing tawa
+Formal|Baku dan rapi
+Emosional|Menyentuh perasaan
+Menenangkan|Pelan dan lembut
+Serius|Tegas dan fokus
+Persuasif|Membujuk penonton
+Reflektif|Mengajak merenung
+Dramatis|Penuh penekanan emosi
+Ramah anak|Sederhana dan penuh kasih
+Penuh rasa ingin tahu|Mengajak bertanya dan menjelajah
+Tegas|Lugas tanpa basa-basi`),
+style:K(`3D Stylized|Tokoh 3D yang disederhanakan dan dibulatkan seperti film animasi studio|stylized 3D animation, smooth soft materials, expressive characters
+2D Cartoon|Animasi gambar datar dengan garis tegas dan warna solid|2D cartoon, bold outlines, flat colors
+Anime 2D|Gaya animasi Jepang dengan mata besar dan cel shading|anime style, cel shading, dynamic expressions
+Photorealistic Cinematic|Tampilan nyata seperti rekaman film|photorealistic cinematic, film grain, natural lens behavior
+Flat Vector|Bentuk geometris bersih tanpa tekstur|flat vector animation, clean geometric shapes
+Motion Graphics|Teks, ikon, dan bentuk abstrak yang bergerak|motion graphics, kinetic typography, icons, clean transitions
+Claymation|Tampak dibuat dari tanah liat atau plastisin|claymation look, handmade clay texture, stop-motion feel
+Watercolor Illustration|Ilustrasi bersapuan cat air lembut|watercolor illustration, soft washes, paper grain
+Storybook Illustration|Ilustrasi hangat seperti buku cerita bergambar|storybook illustration, warm painterly details
+Pixel Art|Gambar kotak piksel ala gim retro|pixel art, limited palette, retro game look
+Paper Cut-out|Tokoh dan latar dari potongan kertas berlapis|paper cut-out layers, visible paper texture, soft shadows
+Stop-motion Miniature|Set miniatur nyata yang difoto bertahap|stop-motion miniature set, tactile props, shallow depth of field
+Comic Book Style|Panel dan garis tebal ala komik, sering dengan efek teks suara|comic book style, inked outlines, halftone shading
+Low-poly 3D|Model 3D bersudut dengan sedikit poligon|low-poly 3D, faceted surfaces, simple shapes
+Chibi Animation|Tokoh berkepala besar, bertubuh mungil, dan imut|chibi characters, oversized heads, cute proportions
+Retro Vintage Animation|Gaya kartun klasik era lampau dengan warna pudar|retro vintage animation, rubber-hose motion, faded colors, film grain
+Isometric Illustration|Pandangan miring 3D tanpa perspektif, seperti diorama|isometric illustration, clean angles, miniature diorama feel
+Digital Painting|Lukisan digital dengan sapuan kuas halus|digital painting, rich brush textures, painterly lighting
+Silhouette Animation|Tokoh berupa bayangan hitam di latar berwarna|silhouette animation, flat black shapes, layered backdrops
+Noir Cinematic|Hitam-putih kontras tinggi bernuansa detektif|film noir, high contrast, deep shadows, moody atmosphere`),
+realism:K(`Stylized|Disederhanakan namun berkarakter
+Sangat kartun|Bentuk dilebih-lebihkan
+Semi-realistis|Proporsi nyata dengan sentuhan ilustrasi
+Fotorealistis|Menyerupai foto atau film nyata
+Sinematik|Tampilan berkelas film
+Ilustratif|Seperti gambar buatan seniman
+Realistis|Proporsi dan detail mendekati dunia nyata
+Semi-kartun|Perpaduan bentuk kartun dan nyata
+Surealis|Dunia ganjil seperti mimpi
+Minimalis|Detail diperkecil seminimal mungkin
+Abstrak|Bentuk dan warna tanpa objek nyata
+Naif|Seperti gambar tangan anak`),
+palette:K(`Cerah ceria|Warna jenuh penuh energi
+Pastel lembut|Warna lembut berkejenuhan rendah
+Warm cinematic|Oranye hangat bernuansa film
+Earth tone|Cokelat, krem, dan hijau lumut
+Cool cinematic|Biru dan teal yang dingin
+Monokrom|Satu warna dengan gradasi
+Warna primer|Merah, biru, dan kuning
+Neon|Warna menyala di latar gelap
+Retro|Warna hangat pudar era lampau
+Muted|Warna kalem dan kurang jenuh
+High contrast|Gelap dan terang sangat kontras
+Natural green|Dominasi hijau alam
+Hitam-putih|Tanpa warna
+Biru laut|Gradasi biru dan aqua
+Warna merek|Mengikuti identitas merek`),
+light:K(`Soft lighting|Cahaya lembut tanpa bayangan keras
+Natural daylight|Cahaya siang alami
+Golden hour|Cahaya keemasan saat senja atau fajar
+Dramatic lighting|Kontras tinggi dengan bayangan tegas
+High-key|Terang merata dengan bayangan minim
+Low-key|Gelap dominan dengan sorotan sedikit
+Rim lighting|Garis cahaya di tepi subjek
+Studio lighting|Pencahayaan terkontrol seperti studio foto
+Blue hour|Cahaya biru sesaat sebelum fajar atau setelah senja
+Backlighting|Cahaya dari belakang subjek
+Volumetric light|Berkas cahaya tampak menembus kabut
+Neon lighting|Cahaya warna-warni dari lampu neon
+Candlelight|Cahaya kecil hangat berkelip
+Overcast|Cahaya merata saat mendung
+Moonlight|Cahaya dingin malam hari`),
+mood:K(`Ceria|Riang dan penuh warna
+Hangat|Akrab dan nyaman
+Damai|Tenteram dan pelan
+Optimistis|Penuh harapan
+Magis|Ajaib dan memukau
+Misterius|Penuh tanda tanya
+Tegang|Menahan napas
+Megah|Besar dan mengesankan
+Nostalgik|Mengenang masa lalu
+Heroik|Gagah dan penuh keberanian
+Intim|Dekat dan personal
+Kontemplatif|Tenang untuk merenung
+Melankolis|Sendu dan syahdu
+Realistis|Apa adanya
+Playful|Jenaka dan lincah`),
+camera:K(`Wide shot|Memperlihatkan lokasi luas
+Medium shot|Subjek dari pinggang ke atas
+Close-up|Fokus pada wajah atau detail
+Static shot|Kamera diam
+Tracking shot|Kamera mengikuti subjek bergerak
+Low angle|Dari bawah; subjek tampak besar
+High angle|Dari atas; subjek tampak kecil
+POV|Pandangan dari mata tokoh
+Over-the-shoulder|Dari balik bahu tokoh
+Bird's-eye|Dari atas tegak lurus
+Dolly-in|Kamera maju perlahan mendekati subjek
+Orbit shot|Kamera mengitari subjek
+Pan|Kamera menoleh ke kiri atau kanan
+Tilt|Kamera menengadah atau menunduk
+Extreme close-up|Sangat dekat pada satu detail`),
+world:K(`Sekolah|Kelas, halaman, dan perpustakaan
+Rumah|Suasana keluarga sehari-hari
+Desa|Sawah, sungai, rumah sederhana
+Kota modern|Gedung dan jalan ramai
+Hutan|Pepohonan dan satwa
+Pantai|Pasir, laut, dan langit luas
+Pegunungan|Lereng, kabut, dan jalur pendakian
+Laboratorium|Alat percobaan dan eksperimen
+Perpustakaan|Rak buku dan suasana sunyi
+Pasar|Pedagang dan keramaian
+Museum|Pajangan benda bersejarah
+Kerajaan fantasi|Istana dan makhluk ajaib
+Ruang angkasa|Planet, bintang, dan pesawat
+Dunia bawah laut|Terumbu karang dan biota laut
+Kota masa depan|Gedung tinggi dan teknologi canggih
+Situs sejarah|Candi, benteng, atau reruntuhan`),
+structure:K(`Tiga babak|Awal, konflik, penyelesaian
+Masalah-solusi|Masalah muncul lalu diselesaikan
+Perjalanan pahlawan|Tokoh pergi, diuji, lalu kembali berubah
+Tutorial berurutan|Langkah 1, 2, 3 hingga hasil
+Transformasi karakter|Tokoh berubah dari awal ke akhir
+Misteri dan pengungkapan|Petunjuk menuju rahasia
+Awal-tengah-akhir|Struktur paling sederhana
+Sebab-akibat|Satu kejadian memicu kejadian lain
+Cerita melingkar|Berakhir di titik awal
+Keseharian|Rangkaian momen sehari-hari
+Kisah inspiratif|Bangkit dari kesulitan
+Perjalanan petualangan|Menjelajah dari satu tempat ke tempat lain`),
+hook:K(`Pertanyaan mengejutkan|Memancing rasa ingin tahu
+Fakta menarik|Fakta yang jarang diketahui
+Masalah langsung|Langsung menampilkan masalah
+Adegan misterius|Mulai dari momen penuh tanya
+Cuplikan akhir|Tampilkan hasil di awal
+Pernyataan kuat|Kalimat tegas yang menggugah
+Tantangan|Mengajak penonton mencoba
+Dialog pemancing|Percakapan yang memancing penasaran
+Kejadian tak terduga|Kejutan di detik awal
+Janji manfaat|Katakan apa yang akan didapat
+Sebelum dan sesudah|Bandingkan kondisi awal dan hasil
+Humor pembuka|Lelucon singkat sebagai pembuka`),
+emotion:K(`Penasaran lalu gembira|Dari ingin tahu ke bahagia
+Tegang lalu lega|Ketegangan diakhiri kelegaan
+Haru lalu bangga|Menyentuh lalu membesarkan hati
+Reflektif lalu optimistis|Merenung lalu berharap
+Gembira|Riang dari awal hingga akhir
+Kagum|Rasa takjub yang meningkat
+Sedih lalu bangkit|Terpuruk lalu bersemangat
+Takut ringan lalu lega|Seram ringan lalu aman
+Penasaran lalu kagum|Rasa ingin tahu berujung takjub
+Lega|Ketegangan dilepas perlahan
+Bangga|Pencapaian dirayakan
+Haru|Menyentuh sepanjang cerita`),
+transition:K(`Cut|Pindah langsung
+Fade|Memudar masuk atau keluar
+Dissolve|Dua gambar melebur
+Match cut|Pindah lewat bentuk atau gerak yang mirip
+Whip pan|Kamera berputar cepat sebagai penyambung
+Dip to black|Layar hitam sesaat
+Wipe|Gambar baru menyapu gambar lama
+Jump cut|Lompatan waktu dalam satu adegan
+Graphic match|Pindah lewat bentuk grafis serupa
+Zoom transition|Masuk atau keluar lewat zoom
+Slide|Gambar bergeser keluar masuk
+Iris|Lingkaran membuka atau menutup`),
+ratio:K(`16:9|Lebar untuk YouTube, TV, dan presentasi
+9:16|Vertikal untuk TikTok, Reels, dan Shorts
+1:1|Persegi untuk feed
+4:5|Potret ringan untuk feed Instagram
+4:3|Bentuk klasik slide dan layar lama
+3:4|Potret untuk poster dan feed
+2.39:1|Layar lebar sinematik`),
+res:K(`720p|HD ringan; file kecil
+1080p|Full HD; standar umum
+1440p|Lebih tajam untuk layar besar
+4K|Sangat tajam; file besar`),
+fps:K(`12|Gerak patah ala stop-motion
+15|Gerak hemat untuk animasi sederhana
+24|Standar film sinematik
+25|Standar siaran PAL
+30|Halus untuk video web
+48|Lebih halus dari film
+50|Halus untuk siaran PAL
+60|Sangat halus untuk gerak cepat`),
+platform:K(`YouTube|Video panjang horizontal
+TikTok|Vertikal cepat dengan hook 3 detik
+Instagram Reels|Vertikal pendek dengan visual kuat
+YouTube Shorts|Vertikal di bawah 60 detik
+Instagram Feed|Video di beranda Instagram
+Facebook|Sering ditonton tanpa suara
+WhatsApp Status|Vertikal pendek untuk kontak
+Presentasi|Ditampilkan di kelas atau rapat
+LMS|Platform belajar daring
+Website|Disematkan di situs
+Televisi|Siaran dengan standar teknis ketat
+Acara langsung|Diputar di layar proyektor`),
+lock:K(`Wajah|Bentuk wajah dan mata tetap sama
+Warna kulit/bulu|Warna tubuh tidak bergeser
+Gaya rambut|Potongan dan warna tetap
+Pakaian|Busana sama kecuali cerita mengubahnya
+Aksesori|Topi, kacamata, atau tas tetap
+Proporsi tubuh|Tinggi dan bentuk tubuh stabil
+Warna dominan|Warna khas karakter tetap dikenali
+Usia visual|Tampak seumur yang sama
+Ciri pembeda|Tanda khas seperti tahi lalat atau bekas luka
+Gaya berjalan dan postur|Cara bergerak tetap khas`),
+continuity:K(`Wajah konsisten|Wajah tidak berubah
+Pakaian tidak berubah tanpa alasan cerita|Ganti baju hanya bila alur menuntut
+Palet warna konsisten|Warna utama seragam
+Arah cahaya masuk akal|Sumber cahaya tidak melompat
+Properti berkelanjutan|Benda yang dipegang tetap ada
+Lokasi berubah dengan transisi|Pindah tempat selalu lewat transisi
+Proporsi karakter tetap|Ukuran tokoh stabil
+Skala properti konsisten|Ukuran benda sepadan antar-scene`),
+ai:K(`GPT|Model OpenAI untuk naskah dan prompt
+Gemini|Model Google untuk teks dan gambar
+Claude|Model Anthropic untuk naskah panjang dan struktur
+Microsoft Copilot|Asisten AI Microsoft
+Grok|Asisten AI dari xAI
+DeepSeek|Model terbuka dari DeepSeek
+Meta AI|Asisten AI berbasis model Llama
+Mistral|Model Mistral AI
+Perplexity|Asisten AI berbasis pencarian
+Qwen|Model Alibaba`),
+workflow:K(`Text-to-video|Klip dibuat langsung dari teks
+Image-to-video|Gambar diam dibuat bergerak
+Hybrid|Gabungan gambar, video, dan penyempurnaan
+Scene-by-scene|Tiap scene dibuat terpisah lalu disunting
+Keyframe-based|Frame awal dan akhir ditentukan
+Character-reference|Memakai gambar acuan karakter
+Manual|Langkah ditentukan sendiri`),
+detail:K(`Standar|Seimbang antara detail dan panjang
+Sangat rinci|Lengkap hingga level shot
+Ringkas|Padat dan singkat`),
+lang:K(`Bahasa Indonesia|Prompt dalam bahasa Indonesia
+English|Prompt bahasa Inggris
+Bilingual|Instruksi Indonesia, istilah visual Inggris`),
+audiotype:K(`Kombinasi|Narasi, dialog, musik, dan efek
+Narasi|Satu suara bercerita
+Dialog|Tokoh saling berbicara
+Musik|Hanya musik latar
+Ambience|Suara suasana tempat
+Efek suara|Bunyi aksi dan benda
+Tanpa audio|Visual saja`),
+voice:K(`Hangat|Ramah dan akrab
+Ramah|Bersahabat dan terbuka
+Ceria|Bersemangat dan riang
+Tenang|Pelan dan menenangkan
+Profesional|Jernih dan netral
+Energik|Cepat dan bertenaga
+Lembut|Halus dan sabar
+Berwibawa|Tegas dan meyakinkan
+Dramatis|Penuh emosi
+Humoris|Jenaka dan lucu
+Misterius|Rendah dan penuh rahasia
+Reflektif|Pelan dan merenung`),
+music:K(`Sinematik|Bernuansa film
+Akustik|Gitar dan piano hangat
+Ceria|Riang dan bertempo cepat
+Ambient|Atmosferik tanpa melodi kuat
+Lo-fi|Santai dengan ketukan lembut
+Epik|Megah dan membangun klimaks
+Orkestra|Alat musik gesek dan tiup
+Elektronik|Synth dan ketukan digital
+Menenangkan|Pelan dan lembut
+Misterius|Nada rendah penuh tanya
+Komedi|Jenaka dan lincah
+Tradisional|Alat musik daerah`),
+subtitle:K(`Tanpa subtitle|Tidak ada teks
+Seluruh audio|Semua ucapan
+Dialog|Hanya ucapan tokoh
+Narasi|Hanya suara narator
+Bilingual|Dua bahasa sekaligus`)};
+const CU={id:'kustom',label:'✎ Tulis sendiri (manual)',description:'Pilihan tidak ada di daftar? Ketik sendiri pada kolom yang muncul; teks Anda dipakai apa adanya di prompt.',frag:''};
+// [key,label,type,required]
+const M=[
+{id:'m1',t:'01 Ide & Konsep',f:[['title','Judul proyek','text',1],['topic','Topik utama','area',1],['ctype','Jenis konten','sel',1],['genre','Genre','sel'],['approach','Pendekatan penyampaian','sel'],['premise','Premis','area'],['message','Pesan utama','area']]},
+{id:'m2',t:'02 Tujuan & Audiens',f:[['goal','Tujuan video','sel',1],['audience','Target audiens','sel'],['age','Rentang usia','text'],['tone','Nada komunikasi','sel'],['cta','Ajakan bertindak (CTA)','text']]},
+{id:'m3',t:'03 Visual Style',f:[['style','Gaya visual','sel'],['realism','Tingkat realisme','sel'],['palette','Palet warna','sel'],['light','Pencahayaan','sel'],['mood','Mood visual','sel'],['camera','Gaya kamera','sel'],['visnote','Panduan visual kustom','area']]},
+{id:'m4',t:'04 Karakter & Dunia',f:[['chars','Deskripsi karakter (wajah, rambut, pakaian, aksesori, sifat)','area'],['world','Dunia / latar utama','sel'],['lock','Character lock','multi']]},
+{id:'m5',t:'05 Cerita & Naskah',f:[['structure','Struktur cerita','sel'],['hook','Hook pembuka','sel'],['conflict','Konflik utama','area'],['emotion','Alur emosi','sel'],['script','Naskah awal (opsional)','area']]},
+{id:'m6',t:'06 Storyboard & Scene',f:[['sceneCount','Jumlah scene (mis. 12)','num'],['sceneDur','Durasi per scene dalam detik (mis. 10)','num'],['scenes','Daftar scene (opsional): satu baris "judul | detik"; kosongkan agar otomatis dari jumlah × durasi','area'],['transition','Transisi antarscene','sel']]},
+{id:'m7',t:'07 Spesifikasi Video',f:[['duration','Durasi total (detik)','num',1],['ratio','Rasio aspek','sel'],['res','Resolusi target','sel'],['fps','Frame rate','sel'],['platform','Platform publikasi','multi']]},
+{id:'m8',t:'08 AI & Workflow',f:[['ai','AI tujuan utama','sel'],['workflow','Workflow produksi','sel'],['lang','Bahasa prompt','sel'],['detail','Tingkat detail prompt','sel']]},
+{id:'m9',t:'09 Audio & Narasi',f:[['audiotype','Jenis audio','sel'],['voice','Karakter suara','sel'],['music','Musik latar','sel'],['subtitle','Subtitle','sel']]},
+{id:'m10',t:'10 Batasan & Produksi',f:[['negative','Hal yang harus dihindari (negative prompt)','area'],['brand','Panduan merek','text'],['continuity','Aturan kontinuitas','multi'],['prodnote','Catatan produksi','area']]}];
+const IC={home:"M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25",bulb:"M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18",cap:"M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342",spark:"M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z",user:"M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z",doc:"M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z",clock:"M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",ok:"M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",pen:"M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10",mag:"M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z",x:"M6 18L18 6M6 6l12 12",list:"M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5",ext:"M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25",dl:"M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"};
+const ic=n=>`<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+const NI={home:'home',apps:'ext',export:'dl',m1:'bulb',m2:'cap',m3:'spark',m4:'user',m5:'doc',m6:'doc',m7:'clock',m8:'spark',m9:'doc',m10:'ok',review:'ok',prompt:'spark'};
+const G={'audience:anak-usia-dini':'Gunakan kalimat sangat pendek, satu ide per scene, karakter ekspresif, dan hindari adegan menakutkan.','audience:sd-kelas-rendah':'Gunakan kosakata sehari-hari, pengulangan ringan, dan visual yang jelas.','audience:remaja':'Gunakan bahasa kekinian yang tetap sopan dan alur yang cepat.','audience:guru':'Sertakan tujuan pembelajaran dan pertanyaan pemantik diskusi.',
+'style:claymation':'Tekankan sidik jari, permukaan tanah liat tak sempurna, gerak patah ala stop-motion (sekitar 12 fps), dan set miniatur berskala kecil.','style:3d-stylized':'Gunakan bentuk membulat, material halus, dan mata besar ekspresif ala film animasi 3D.','style:2d-cartoon':'Gunakan garis tepi tegas, warna solid datar, dan gerak yang dilebih-lebihkan.','style:watercolor-illustration':'Gunakan sapuan cat air transparan, tepi lembut, dan tekstur kertas yang terlihat.','style:photorealistic-cinematic':'Hindari tampilan kartun; jaga anatomi, lensa, dan pencahayaan tetap realistis.','style:paper-cut-out':'Susun elemen dalam lapisan kertas dengan bayangan tipis antar lapisan.',
+'goal:mengedukasi':'Akhiri dengan ringkasan poin utama dan satu pertanyaan refleksi.','goal:mempromosikan':'Tampilkan manfaat sebelum fitur dan tutup dengan CTA yang jelas.','goal:berdakwah':'Sampaikan pesan dengan santun, tanpa menghakimi, dan hindari penggambaran yang tidak pantas.',
+'structure:tiga-babak':'Babak 1 (sekitar 25%) pengenalan, Babak 2 (sekitar 50%) konflik dan upaya, Babak 3 (sekitar 25%) klimaks dan resolusi.','structure:masalah-solusi':'Perkenalkan masalah dalam 20% awal, tunjukkan percobaan gagal, lalu solusi dan hasilnya.','structure:tutorial-berurutan':'Beri tiap langkah satu scene dengan judul langkah dan hasil yang terlihat.','structure:perjalanan-pahlawan':'Petakan: dunia biasa, panggilan, ujian, krisis, kembali dengan perubahan.',
+'ratio:9-16':'Letakkan subjek di tengah dan sisakan area aman atas-bawah untuk teks dan antarmuka platform.','ratio:16-9':'Manfaatkan komposisi lebar dan beri ruang negatif di sisi subjek.','ratio:1-1':'Gunakan komposisi terpusat yang tetap terbaca saat dipotong.',
+'workflow:image-to-video':'Rancang satu gambar kunci bersih per scene; instruksi video hanya menjelaskan gerak dan kamera.','workflow:text-to-video':'Tulis prompt video mandiri per scene dan ulangi deskripsi karakter lengkap di tiap prompt.','workflow:keyframe-based':'Tentukan frame awal dan frame akhir tiap scene agar transisi terkendali.','workflow:scene-by-scene':'Buat tiap scene sebagai unit terpisah yang bisa dirender dan disunting sendiri.',
+'detail:sangat-rinci':'Jabarkan setiap scene hingga level shot, lensa, pencahayaan, dan properti.','detail:ringkas':'Jaga jawaban padat; gunakan poin-poin pendek.'};
+const LONG={'3d-stylized':'Ciri: tokoh bertubuh membulat, kepala besar, mata ekspresif, permukaan halus dengan pencahayaan lembut seperti film animasi studio besar. Cocok untuk cerita anak, maskot, dan edukasi yang hangat.','2d-cartoon':'Ciri: garis tepi tegas, warna datar tanpa gradasi rumit, gerak lentur dan dilebih-lebihkan. Cocok untuk komedi, edukasi, dan konten media sosial yang cepat diproduksi.','anime-2d':'Ciri: mata besar, rambut berbentuk lancip, bayangan bertingkat (cel shading), dan efek garis kecepatan. Cocok untuk aksi, drama, dan cerita remaja.','claymation':'Claymation adalah animasi dari tokoh tanah liat atau plastisin yang digerakkan sedikit demi sedikit, sehingga tampak buatan tangan dengan sidik jari dan permukaan tak sempurna. Contoh terkenal: Wallace & Gromit dan Shaun the Sheep. Cocok untuk dongeng, komedi, dan edukasi kreatif.','stop-motion-miniature':'Ciri: set dan properti miniatur nyata yang difoto bertahap, kedalaman bidang tipis, dan tekstur bahan yang terasa. Cocok untuk cerita fantasi dan promosi bernuansa kerajinan.','paper-cut-out':'Ciri: tokoh dan latar tampak dari potongan kertas berlapis dengan bayangan tipis, gerak datar seperti boneka kertas. Cocok untuk cerita rakyat, edukasi, dan sejarah.','watercolor-illustration':'Ciri: warna transparan lembut, tepi menyebar, dan tekstur kertas yang terlihat. Cocok untuk cerita puitis, dongeng tenang, dan konten reflektif.','storybook-illustration':'Ciri: lukisan hangat penuh detail seperti halaman buku cerita bergambar, komposisi seperti panggung. Cocok untuk dongeng dan kisah moral.','flat-vector':'Ciri: bentuk geometris bersih, warna solid, tanpa tekstur atau bayangan rumit. Cocok untuk explainer, presentasi, dan materi korporat.','motion-graphics':'Ciri: teks, ikon, grafik, dan bentuk abstrak yang bergerak mengikuti irama narasi. Cocok untuk data, promosi, dan penjelasan konsep.','pixel-art':'Ciri: gambar tersusun dari kotak piksel dengan palet terbatas seperti gim retro. Cocok untuk konten gim, nostalgia, dan humor.','photorealistic-cinematic':'Ciri: tampilan menyerupai rekaman film nyata dengan lensa, butiran film, dan cahaya realistis. Cocok untuk dokumenter, iklan, dan drama serius.','image-to-video':'Alur kerja: Anda membuat gambar diam dulu, lalu alat video menggerakkannya. Hasilnya lebih terkendali karena tampilan awal sudah ditentukan.','keyframe-based':'Alur kerja: Anda menentukan gambar awal dan akhir tiap klip, lalu alat video mengisi gerak di antaranya.','text-to-video':'Alur kerja: alat video membuat klip langsung dari deskripsi teks. Cepat, tetapi konsistensi karakter lebih sulit dijaga.','match-cut':'Transisi yang menyambung dua scene lewat bentuk, gerak, atau warna yang mirip, misalnya roda berputar berganti menjadi jam.','whip-pan':'Kamera berputar sangat cepat hingga gambar kabur, lalu muncul scene baru. Memberi kesan energik.','high-key':'Pencahayaan terang merata dengan bayangan minim; memberi kesan bersih, ceria, dan ramah.','rim-lighting':'Cahaya dari belakang yang membentuk garis terang di tepi subjek sehingga terpisah dari latar.','golden-hour':'Cahaya hangat keemasan saat sesaat setelah matahari terbit atau sebelum terbenam; memberi nuansa nostalgik dan hangat.','tracking-shot':'Kamera bergerak mengikuti subjek berjalan atau berlari; memberi kesan ikut dalam perjalanan.','bird-s-eye':'Kamera dari atas tegak lurus; baik untuk menunjukkan peta, tata ruang, dan pola.'};
+Object.assign(G,{'ctype:dongeng-anak':'Tutup dengan pesan moral yang eksplisit namun lembut.','ctype:explainer-video':'Mulai dari masalah, jelaskan konsep dengan analogi visual, dan akhiri dengan ringkasan.','ctype:tutorial':'Tampilkan hasil akhir di awal, lalu langkah berurutan dengan penanda jelas.','ctype:promosi-produk':'Tunjukkan masalah pelanggan, produk sebagai solusi, bukti manfaat, lalu ajakan bertindak.','ctype:konten-media-sosial':'Hook kuat di 3 detik pertama dan ritme potongan cepat.',
+'genre:komedi':'Bangun lelucon lewat situasi dan ekspresi, bukan ejekan.','genre:misteri':'Sebar petunjuk bertahap dan tahan pengungkapan hingga akhir.','genre:petualangan':'Tunjukkan tujuan, rintangan bertahap, dan perubahan lokasi yang jelas.','genre:fantasi':'Tetapkan aturan dunia sihir sejak awal agar logika cerita konsisten.',
+'tone:hangat':'Gunakan sapaan akrab dan kalimat bersahabat.','tone:humoris':'Selipkan humor ringan di setiap beberapa scene.','tone:formal':'Gunakan bahasa baku dan struktur rapi.','tone:menenangkan':'Gunakan ritme lambat dan kalimat lembut.',
+'realism:sangat-kartun':'Proporsi boleh dilebih-lebihkan; fisika bebas.','realism:semi-realistis':'Jaga proporsi mendekati nyata dengan sentuhan ilustratif.','realism:fotorealistis':'Jaga detail kulit, bahan, dan bayangan menyerupai foto.',
+'palette:pastel-lembut':'Pakai warna lembut berkejenuhan rendah, hindari kontras keras.','palette:cerah-ceria':'Pakai warna jenuh dan kontras hangat-dingin.','palette:earth-tone':'Pakai cokelat, hijau lumut, dan krem.','palette:warm-cinematic':'Dominasi oranye hangat pada sorotan dan teal lembut pada bayangan.','palette:neon':'Pakai warna menyala di latar gelap dengan efek pendar.',
+'light:soft-lighting':'Cahaya lembut tanpa bayangan keras.','light:dramatic-lighting':'Kontras tinggi, bayangan tegas, satu sumber cahaya dominan.','light:natural-daylight':'Cahaya siang alami dengan bayangan jelas namun lembut.',
+'mood:ceria':'Gerak lincah dan warna cerah.','mood:misterius':'Pakai bayangan panjang, kabut ringan, dan ruang gelap.','mood:tegang':'Pakai close-up, ritme potongan cepat, dan cahaya kontras.','mood:magis':'Tambah partikel cahaya dan kilau lembut.','mood:damai':'Gerak kamera pelan dan komposisi lapang.',
+'camera:wide-shot':'Awali scene dengan wide shot untuk memperkenalkan lokasi.','camera:close-up':'Pakai close-up untuk momen emosi dan detail penting.','camera:static-shot':'Pertahankan kamera diam agar fokus pada aksi karakter.','camera:low-angle':'Sudut rendah membuat tokoh tampak kuat.',
+'hook:pertanyaan-mengejutkan':'Buka dengan satu pertanyaan yang jawabannya terungkap di akhir.','hook:fakta-menarik':'Buka dengan fakta mengejutkan dalam satu kalimat.','hook:masalah-langsung':'Langsung tampilkan masalah dalam 3-5 detik pertama.','hook:cuplikan-akhir':'Tampilkan potongan hasil akhir lalu mundur ke awal.',
+'emotion:penasaran-lalu-gembira':'Naikkan rasa ingin tahu di paruh awal, lepaskan dengan kejutan menyenangkan.','emotion:tegang-lalu-lega':'Naikkan ketegangan bertahap lalu beri jeda lega di akhir.','emotion:haru-lalu-bangga':'Tunjukkan perjuangan, lalu momen pencapaian yang menyentuh.',
+'transition:cut':'Gunakan cut langsung pada perubahan aksi.','transition:fade':'Gunakan fade untuk perpindahan waktu atau akhir bagian.','transition:match-cut':'Cari elemen visual yang mirip untuk menyambung dua scene.','transition:whip-pan':'Gunakan whip pan untuk perpindahan cepat dan energik.',
+'voice:hangat':'Narasi bernada ramah dengan jeda alami.','voice:ceria':'Narasi bersemangat dengan intonasi naik.','voice:tenang':'Narasi pelan dengan jeda panjang.',
+'music:sinematik':'Musik membangun bertahap menuju klimaks.','music:akustik':'Gitar dan piano ringan, volume rendah di bawah narasi.','music:ceria':'Musik riang dengan tempo sedang-cepat.',
+'subtitle:narasi':'Tampilkan subtitle singkat maksimal dua baris sesuai narasi.','subtitle:seluruh-audio':'Tampilkan subtitle untuk semua ucapan dengan kontras tinggi.',
+'platform:tiktok':'Pesan inti dalam 3 detik pertama; teks besar dan terbaca di layar ponsel.','platform:youtube-shorts':'Pertahankan durasi di bawah 60 detik dan tutup dengan akhir yang mengundang tonton ulang.','platform:instagram-reels':'Visual menonjol sejak frame pertama dan aman dari area antarmuka.','platform:youtube':'Beri pembuka kuat dan struktur bab yang jelas.','platform:lms':'Sertakan tujuan belajar dan jeda untuk berpikir.','platform:presentasi':'Gunakan teks besar dan tempo tenang agar mudah dibahas.'});
+const ST={master:['Baca seluruh brief dan tandai informasi yang kurang.','Susun ringkasan kreatif satu halaman.','Rinci karakter, dunia, dan struktur cerita.','Buat rencana scene dengan estimasi durasi.','Tutup dengan risiko dan pertanyaan klarifikasi.'],script:['Tentukan hook dan pesan inti.','Tulis naskah per scene sesuai alur emosi.','Sesuaikan jumlah kata dengan durasi scene.','Tandai bagian narasi dan dialog.','Periksa bahasa agar cocok untuk audiens.'],char:['Rangkum peran dan sifat tiap karakter.','Rinci wajah, rambut, pakaian, dan aksesori.','Tetapkan palet warna dan proporsi.','Buat daftar ekspresi dan pose utama.','Tulis prompt gambar karakter dan aturan character lock.'],board:['Bagi cerita menjadi scene sesuai timeline.','Tentukan lokasi, karakter, dan aksi tiap scene.','Pilih shot, kamera, dan transisi.','Tulis dialog atau narasi per scene.','Catat kontinuitas antar scene.'],img:['Ambil data karakter dan gaya visual.','Tulis deskripsi subjek, latar, dan aksi.','Tambahkan cahaya, komposisi, dan rasio aspek.','Tambahkan negative prompt.','Ulangi ciri character lock di tiap prompt.'],vid:['Ambil gambar atau deskripsi scene.','Tentukan gerak subjek dan kamera.','Atur dinamika lingkungan dan ritme.','Batasi durasi klip sesuai timeline.','Tulis hal yang tidak boleh bergerak atau berubah.'],aud:['Tentukan karakter suara dan tempo.','Tulis narasi dan dialog per scene.','Pilih musik, ambience, dan efek suara.','Atur prioritas campuran audio.','Siapkan teks subtitle.'],qc:['Cocokkan hasil dengan brief.','Periksa konsistensi karakter dan visual.','Periksa durasi dan alur emosi.','Temukan kontradiksi dan celah cerita.','Susun daftar perbaikan berprioritas.']};
+const FM={master:'Format: Markdown dengan bagian Ringkasan, Visi kreatif, Karakter, Struktur cerita, Rencana scene, Risiko produksi, dan Pertanyaan klarifikasi.',script:'Format: naskah per scene dengan label NARASI / DIALOG, estimasi durasi baca, dan catatan visual singkat.',char:'Format: tabel atribut (wajah, rambut, pakaian, aksesori, warna, proporsi) plus daftar ekspresi dan pose, lalu satu paragraf prompt gambar karakter.',board:'Format: tabel Markdown atau daftar scene sesuai kolom yang disebut di atas.',img:'Format: satu blok prompt per scene dengan judul Scene N, prompt utama, dan negative prompt.',vid:'Format: per scene tuliskan Motion prompt, Camera, Durasi, dan Larangan gerak.',aud:'Format: per scene tuliskan narasi, dialog, musik, ambience, SFX, dan teks subtitle.',qc:'Format: checklist lulus/perlu perbaikan per kriteria, lalu daftar perbaikan berurutan prioritas.'};
+function adv(type){const L=[],sc=scenes();['ctype','genre','tone','audience','goal','style','realism','palette','light','mood','camera','world','hook','structure','emotion','transition','ratio','workflow','detail','voice','music','subtitle'].forEach(k=>{const g=G[k+':'+S.f[k]];if(g)L.push(g)});(S.f.platform||[]).forEach(p=>{const g=G['platform:'+p];if(g)L.push(g)});
+ if((S.f.lock||[]).length)L.push('Ulangi ciri character lock ('+V('lock')+') secara eksplisit di setiap prompt scene agar tidak berubah.');
+ if(!V('chars')&&['char','board','img','vid'].includes(type))L.push('Deskripsi karakter belum diberikan: ajukan pertanyaan atau nyatakan asumsi sebelum melanjutkan.');
+ let r='';if(sc.length){let c=0;const tot=sc.reduce((a,b)=>a+b[1],0),avg=Math.round(tot/sc.length);L.push(`Tempo: ${sc.length} scene, rata-rata ${avg} detik (total ${tot} detik = ${Math.floor(tot/60)} menit ${tot%60} detik). Batasi narasi sekitar ${Math.round(avg*2.5)} kata per scene dan satu aksi utama per scene.`);
+ r='SCENE TIMELINE (dihitung otomatis dari rencana scene)\n'+sc.map((x,i)=>{const a=c;c+=x[1];return`Scene ${i+1} (${a}-${c} dtk, ${x[1]} dtk): ${x[0]}`}).join('\n')+'\n\n'}
+ return r+(L.length?'REKOMENDASI TEMPLATE (saran template, bukan input pengguna)\n'+L.map(x=>'- '+x).join('\n')+'\n\n':'')}
+const PRE={duration:[15,30,45,60,90,120,180,300,600,900,1200,1800],sceneDur:[3,5,6,8,10,12,15,20,30],sceneCount:[3,4,5,6,8,10,12,15,20,24,30]};
+const F={};M.forEach(m=>m.f.forEach(f=>F[f[0]]=f));
+const KEY='sbva-v1';let S,view='home',P={type:'master',mode:'full'},out='';
+const $=i=>document.getElementById(i);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fresh=()=>({app:'Storybord Video AI',version:'1.0',f:{duration:60},meta:{createdAt:new Date().toISOString(),updatedAt:''}});
+try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}if(!S||!S.f)S=fresh();
+const opts=k=>C[k]||[];
+const opt=(k,id)=>opts(k).find(o=>o.id===id);
+function V(k){if(F[k][2]==='multi')return[...(S.f[k]||[]).map(i=>opt(k,i)?.label||i),(S.f[k+'_x']||'').trim()].filter(Boolean).join(', ');const v=S.f[k];if(v==null||v===''||(Array.isArray(v)&&!v.length))return'';
+ if(Array.isArray(v))return v.map(i=>opt(k,i)?.label||i).join(', ');
+ if(k==='duration')return v>0?v+' detik':'';
+ if(F[k][2]!=='sel')return String(v).trim();
+ if(v==='kustom')return(S.f[k+'_c']||'').trim();
+ const o=opt(k,v);return o?o.label+(k==='style'&&o.frag?' ('+o.frag+')':''):''}
+function scenes(){const d=+S.f.sceneDur||0,L=(S.f.scenes||'').split('\n').map(l=>l.split('|')).filter(a=>a[0].trim()).map(a=>[a[0].trim(),parseFloat(a[1])||d]);if(L.length)return L;return Array.from({length:+S.f.sceneCount||0},(_,i)=>['Scene '+(i+1),d])}
+function check(){const miss=[],warn=[];M.forEach(m=>m.f.forEach(f=>{if(f[3]&&!V(f[0]))miss.push(f[1])}));
+ const sc=scenes(),d=+S.f.duration||0;if(sc.length){const t=sc.reduce((a,b)=>a+b[1],0);if(t!==d)warn.push(`Total durasi scene ${t} detik berbeda dari target ${d} detik.`)}
+ if(!V('style'))warn.push('Visual style belum dipilih.');if(!V('audience'))warn.push('Target audiens belum ditentukan.');
+ if((S.f.platform||[]).some(p=>['youtube-shorts','tiktok','instagram-reels'].includes(p))&&S.f.ratio&&S.f.ratio!=='9-16')warn.push('Platform vertikal dipilih, tetapi rasio bukan 9:16.');
+ if(S.f.chars&&!(S.f.lock||[]).length)warn.push('Character lock belum ditentukan untuk karakter yang tampil berulang.');
+ if(/anak/i.test(V('audience'))&&/(tegang|misterius)/i.test(V('mood')+V('genre')))warn.push('Mood/genre tegang atau misterius mungkin kurang sesuai untuk audiens anak.');
+ return{miss,warn,st:miss.length?'Belum lengkap':warn.length?'Perlu diperiksa':'Siap'}}
+function mst(m){const fl=m.f.filter(f=>V(f[0])&&!(f[0]==='duration'&&m.f.length>1&&m.f.filter(x=>V(x[0])).length===1)).length,rm=m.f.some(f=>f[3]&&!V(f[0]));return fl===0?'Belum diisi':rm?'Dalam proses':'Selesai'}
+function nav(){const G=[['WORKSPACE',[['home','Dashboard'],['apps','Aplikasi AI'],['export','Impor & Ekspor']]],['VIDEO BLUEPRINT',M.map(m=>[m.id,m.t])],['OUTPUT',[['review','Review Blueprint'],['prompt','Prompt Generator']]]];
+ $('sb').innerHTML='<h1>Storybord Video AI</h1><small>AI Animation Blueprint & Prompt Builder</small>'+G.map(g=>`<h2>${g[0]}</h2>`+g[1].map(i=>{const m=M.find(x=>x.id===i[0]);return`<button class="nb ${view===i[0]?'on':''}" data-v="${i[0]}"${view===i[0]?' aria-current="page"':''}><span>${ic(NI[i[0]])}${i[1]}</span>${m?`<em>${mst(m)}</em>`:''}</button>`}).join('')).join('');
+ const rq=M.flatMap(m=>m.f.filter(f=>f[3])),done=rq.filter(f=>V(f[0])).length;$('pg').firstChild.style.width=(done/rq.length*100)+'%';$('ttl').textContent=S.f.title||'Proyek tanpa judul'}
+function fld(f){const[k,l,t,r]=f,v=S.f[k],id='i_'+k,L=`<label for="${id}">${esc(l)}${r?' <b aria-hidden="true">*</b>':''}</label>`;
+ if(t==='text')return L+`<input id="${id}" data-k="${k}" value="${esc(v)}"${r?' required':''}>`;
+ if(t==='area')return L+`<textarea id="${id}" data-k="${k}" rows="3">${esc(v)}</textarea>`;
+ if(t==='num')return L+`<input id="${id}" type="number" min="1" list="dl_${k}" data-k="${k}" value="${esc(v)}"${r?' required':''}><datalist id="dl_${k}">${(PRE[k]||[]).map(n=>`<option value="${n}">`).join('')}</datalist>`;
+ if(t==='multi')return`<fieldset><legend>${esc(l)}</legend>`+C[k].map(o=>`<label class="ck"><input type="checkbox" data-m="${k}" value="${o.id}"${(v||[]).includes(o.id)?' checked':''}>${esc(o.label)}${o.description?' <small style="color:var(--t2)">– '+esc(o.description)+'</small>':''}</label><br>`).join('')+`<input data-k="${k}_x" value="${esc(S.f[k+'_x'])}" placeholder="Tambah pilihan lain (tulis manual)" aria-label="${esc(l)} tambahan"></fieldset>`;
+ const man=v==='kustom',cur=opt(k,v);
+ return L+`<div class="dd"><div class="row">${man?`<input id="${id}" data-k="${k}_c" value="${esc(S.f[k+'_c'])}" placeholder="Tulis pilihan Anda sendiri">`:`<button type="button" class="sel" id="${id}" data-open="${k}" aria-haspopup="listbox" aria-expanded="false">${esc(cur?cur.label:'— Pilih —')}</button>`}<button type="button" class="ib" data-pen="${k}" aria-label="${man?'Kembali ke daftar pilihan':'Tulis pilihan sendiri'}" title="${man?'Kembali ke daftar':'Tulis manual'}">${ic(man?'list':'pen')}</button></div>${man?'':`<ul class="pop" role="listbox" hidden>${opts(k).map(o=>`<li><button type="button" class="pk${o.id===v?' on':''}" role="option" data-pick="${k}:${o.id}">${esc(o.label)}</button><button type="button" class="ib" style="border:0" data-info="${k}:${o.id}" aria-label="Penjelasan ${esc(o.label)}" title="Lihat penjelasan">${ic('mag')}</button></li>`).join('')}</ul>`}</div>`}
+function selOpts(k,q=''){const v=S.f[k];return'<option value="">— Pilih —</option>'+opts(k).filter(o=>o.id===v||!q||(o.label+o.description).toLowerCase().includes(q.toLowerCase())).map(o=>`<option value="${o.id}"${o.id===v?' selected':''}>${esc(o.label)}${o.description&&o.id!=='kustom'?' — '+esc(o.description.slice(0,70)):''}</option>`).join('')}
+function sec(s){return`<div class="card"><h3>${s.t}</h3>${s.l.map(a=>`<div><b>${esc(a[0])}:</b> <span class="sm">${esc(a[1])}</span></div>`).join('')}</div>`}
+const SEC=[['PROJECT CONTEXT',['title','topic','ctype','genre','approach','premise','message','goal','audience','age','tone','cta']],['VISUAL DIRECTION',['style','realism','palette','light','mood','camera','visnote']],['CHARACTER AND WORLD',['chars','world','lock']],['STORY REQUIREMENTS',['structure','hook','conflict','emotion','script']],['STORYBOARD PLAN',['sceneCount','sceneDur','scenes','transition']],['VIDEO SPECIFICATION',['duration','ratio','res','fps','platform']],['AUDIO',['audiotype','voice','music','subtitle']],['WORKFLOW',['ai','workflow','lang','detail']],['CONSTRAINTS',['negative','brand','continuity','prodnote']]];
+const ctx=()=>SEC.map(s=>({t:s[0],l:s[1].map(k=>[F[k][1].split(' (')[0].split(':')[0],V(k)]).filter(a=>a[1])})).filter(s=>s.l.length);
+const T={master:{n:'Master Blueprint Brief',s:[0,1,2,3,4,5,6,7,8],r:'Bertindak sebagai sutradara animasi AI, perancang cerita, dan storyboard artist.',k:'Rangkum brief ini menjadi blueprint kreatif yang rapi, lalu daftarkan pertanyaan klarifikasi dan asumsi eksplisit sebelum produksi.'},
+script:{n:'Pengembangan Naskah',s:[0,3,5,6,8],r:'Bertindak sebagai penulis naskah video animasi.',k:'Kembangkan ide menjadi naskah lengkap: struktur cerita, narasi, dialog, dan estimasi durasi per bagian sesuai target.'},
+char:{n:'Character Sheet',s:[0,1,2,8],r:'Bertindak sebagai character designer.',k:'Susun character sheet rinci: ciri fisik, wajah, pakaian, aksesori, ekspresi, pose, palet warna, dan aturan konsistensi (character lock).'},
+board:{n:'Storyboard',s:[0,1,2,3,4,5,8],r:'Bertindak sebagai storyboard artist.',k:'Bagi naskah menjadi scene. Tiap scene memuat: nomor dan judul, timestamp dan durasi, tujuan naratif, lokasi dan karakter, aksi dan ekspresi, jenis shot dan gerakan kamera, deskripsi visual, dialog/narasi, musik/SFX/transisi, dan catatan kontinuitas.'},
+img:{n:'Prompt Gambar per Scene',s:[1,2,4,5,7,8],r:'Bertindak sebagai prompt engineer untuk generator gambar.',k:'Untuk setiap scene, tulis satu prompt gambar mandiri yang memuat gaya visual, character lock, lokasi, pencahayaan, komposisi, dan aspek teknis.'},
+vid:{n:'Prompt Video per Scene',s:[1,2,4,5,7,8],r:'Bertindak sebagai prompt engineer untuk generator video.',k:'Untuk setiap scene, tulis instruksi gerak: gerakan kamera, aksi dan ekspresi karakter, dinamika lingkungan, durasi klip, dan batasan gerakan.'},
+aud:{n:'Audio & Narasi',s:[0,3,5,6,8],r:'Bertindak sebagai sound designer dan penulis narasi.',k:'Susun narasi, dialog, karakter suara, musik, ambience, efek suara, dan subtitle per scene.'},
+qc:{n:'Quality Control',s:[0,1,2,3,4,5,8],r:'Bertindak sebagai produser yang memeriksa kualitas.',k:'Evaluasi naskah dan storyboard yang akan saya tempel: kesesuaian dengan brief, konsistensi karakter, durasi, visual style, dan kesinambungan cerita. Beri daftar masalah dan saran perbaikan.'}};
+function build(type,mode){const t=T[type],ss=ctx().filter(s=>t.s.includes(SEC.findIndex(x=>x[0]===s.t)));
+ if(mode==='json')return JSON.stringify({task:t.n,role:t.r,request:t.k,data:Object.fromEntries(ss.map(s=>[s.t,Object.fromEntries(s.l)]))},null,2);
+ const body=mode==='short'?ss.map(s=>s.t+': '+s.l.map(a=>a[0]+' = '+a[1].replace(/\n/g,' / ')).join('; ')).join('\n'):ss.map(s=>s.t+'\n'+s.l.map(a=>a[0]+': '+a[1]).join('\n')).join('\n\n');
+ return`ROLE\n${t.r}\n\n${body}\n\n${adv(type)}OUTPUT REQUEST\n${t.k}\n${FM[type]}\n\nLANGKAH KERJA\n${ST[type].map((x,i)=>(i+1)+'. '+x).join('\n')}\n${['char','board','img','vid'].includes(type)?'\nATURAN KONSISTENSI VISUAL\n- Gunakan deskripsi karakter yang identik di setiap scene.\n- Pertahankan palet, arah cahaya, dan proporsi kecuali cerita mengubahnya.\n- Beri transisi yang jelas bila lokasi atau waktu berubah.\n':''}\nPERTANYAAN KLARIFIKASI\nSebelum mulai, ajukan maksimal 5 pertanyaan tentang informasi penting yang belum ada. Jika tidak terjawab, lanjutkan dengan asumsi yang ditulis eksplisit.\n\nQUALITY CRITERIA\n- Patuhi semua input pengguna; bedakan fakta brief dari asumsi Anda.\n- Jaga konsistensi karakter, gaya visual, palet, dan arah cahaya antar-scene.\n- Pastikan durasi tiap bagian sesuai target dan alur emosi berjalan jelas.\n- Hindari konten yang tidak sesuai audiens dan semua hal pada CONSTRAINTS.\n\nINSTRUCTIONS\nJangan mengubah fakta inti brief tanpa memberi tahu saya. Jika ada informasi penting yang belum tersedia, ajukan pertanyaan atau nyatakan asumsi secara eksplisit. Jaga konsistensi karakter, gaya visual, durasi, dan kontinuitas. Durasi adalah target perencanaan; sesuaikan dengan batasan alat yang saya pakai.`}
+function toast(m){const t=$('toast');t.textContent=m;t.className='on';clearTimeout(toast.h);toast.h=setTimeout(()=>t.className='',2500)}
+let tm;function save(){$('sv').textContent='Menyimpan…';clearTimeout(tm);tm=setTimeout(()=>{S.meta.updatedAt=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S));$('sv').textContent='Tersimpan di browser'}catch(e){$('sv').textContent='Gagal menyimpan';toast('Penyimpanan penuh atau diblokir. Ekspor JSON sebagai cadangan.')}},400);nav()}
+function dl(name,txt,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+const slug=()=>(S.f.title||'proyek').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'proyek';
+function txtExport(){const c=check();return`STORYBORD VIDEO AI - BLUEPRINT\nStatus: ${c.st}\n\n`+ctx().map(s=>s.t+'\n'+s.l.map(a=>a[0]+': '+a[1]).join('\n')).join('\n\n')+'\n\n=====\nPROMPT: '+T[P.type].n+'\n\n'+build(P.type,P.mode)}
+function render(){nav();const v=$('v'),m=M.find(x=>x.id===view);
+ if(m){v.innerHTML=`<div class="card"><h3>${m.t}</h3>${m.f.map(fld).join('')}</div><button class="b" data-v="${M[M.indexOf(m)+1]?.id||'review'}">Simpan & lanjut</button>`+(view==='m6'?'<div class="card" id="scs"></div>':'');if(view==='m6')scSum()}
+ else if(view==='home')v.innerHTML=`<div class="card"><h3>Susun blueprint sebelum menyentuh AI</h3><p>Isi formulir bertahap, lalu salin prompt terstruktur ke AI pilihan Anda (GPT, Gemini, Claude, atau lainnya). Aplikasi ini tidak membuat gambar, video, atau audio, dan tidak terhubung ke layanan AI mana pun. Semua pembuatan aset dilakukan di AI eksternal.</p><p>Draft tersimpan otomatis di browser ini saja. Ekspor JSON secara berkala sebagai cadangan.</p><button class="b" data-v="m1">${S.f.title?'Lanjutkan draft':'Mulai proyek'}</button><button class="b g" id="reset">Proyek baru</button><button class="b g" data-v="export">Impor proyek</button></div>`;
+ else if(view==='review'){const c=check();v.innerHTML=`<div class="card"><h3>Status: <span class="tag ${c.st.split(' ')[0]}">${c.st}</span></h3>${c.miss.length?'<p>Wajib diisi:</p><ul class="l">'+c.miss.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>':''}${c.warn.length?'<p>Perlu diperiksa:</p><ul class="l">'+c.warn.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>':''}${!c.miss.length&&!c.warn.length?'<p>Data wajib lengkap dan tidak ada konflik.</p>':''}</div>`+(ctx().map(sec).join('')||'<div class="card">Belum ada data. Mulai dari modul 01.</div>')+'<button class="b" data-v="prompt">Susun prompt</button>'}
+ else if(view==='apps'){const A=(n,u,d,top)=>`<div class="card"><h3>${n}</h3><p>${d}</p><a class="b" href="${u}" target="_blank" rel="noopener noreferrer">${ic('ext')}Buka ${n}<span style="position:absolute;left:-9999px"> (tab baru)</span></a></div>`;
+ v.innerHTML=`<div class="card"><h3>Aplikasi AI</h3><p>Tombol di bawah membuka situs AI di tab baru. Storybord Video AI tidak terhubung ke layanan mana pun, jadi salin prompt Anda lebih dulu lalu tempel di sana. Gambar dan video dibuat di aplikasi tersebut, bukan di sini.</p><button class="b" id="cp2">${ic('doc')}Salin prompt terakhir (${esc(T[P.type].n)})</button></div><h3 style="margin:16px 0 8px">Utama</h3><div class="ag">${A('ChatGPT','https://chatgpt.com','Menulis naskah, character sheet, storyboard, dan prompt per scene.')}${A('Gemini','https://gemini.google.com','Asisten Google untuk naskah, storyboard, dan prompt visual.')}${A('Google Flow','https://labs.google/fx/tools/flow','Alat Google untuk membuat dan menyusun klip video dengan AI.')}${A('Gemini Voice Over','https://share.gemini.google/hW3ABgY1ER6r','Tautan Gemini untuk membuat voice over dari naskah Anda.')}</div><h3 style="margin:18px 0 8px">Lainnya</h3><div class="ag sm2">${A('Claude','https://claude.ai','Naskah panjang, analisis brief, dan pemeriksaan konsistensi.')}${A('Microsoft Copilot','https://copilot.microsoft.com','Asisten Microsoft untuk menulis dan merangkum.')}${A('Grok','https://grok.com','Asisten AI dari xAI.')}${A('DeepSeek','https://chat.deepseek.com','Asisten AI untuk menulis dan bernalar.')}${A('Meta AI','https://www.meta.ai','Asisten AI dari Meta.')}${A('Vibes AI','https://vibes.ai/','Bagian dari ekosistem Meta AI untuk membuat dan menjelajahi video pendek buatan AI.')}${A('Perplexity','https://www.perplexity.ai','AI berbasis pencarian untuk riset referensi.')}${A('Mistral Le Chat','https://chat.mistral.ai','Asisten AI dari Mistral.')}${A('Qwen','https://chat.qwen.ai','Asisten AI dari Alibaba.')}</div>`}
+ else if(view==='prompt'){out=build(P.type,P.mode);v.innerHTML=`<div class="card"><h3>Prompt Generator</h3><p>Prompt disusun dari template lokal. Salin ke AI eksternal; aplikasi tidak menjalankan atau memeriksa hasilnya.</p><label for="pt">Jenis prompt</label><select id="pt">${Object.entries(T).map(([k,t])=>`<option value="${k}"${k===P.type?' selected':''}>${t.n}</option>`).join('')}</select><label for="pm">Mode keluaran</label><select id="pm">${[['full','Lengkap'],['short','Ringkas'],['json','JSON']].map(a=>`<option value="${a[0]}"${a[0]===P.mode?' selected':''}>${a[1]}</option>`).join('')}</select><label for="out">Hasil</label><textarea id="out" readonly>${esc(out)}</textarea><button class="b" id="cp">${ic('doc')}Salin prompt</button><p style="margin:10px 0 0"><b>Buka AI:</b> ${[['ChatGPT','https://chatgpt.com'],['Gemini','https://gemini.google.com'],['Google Flow','https://labs.google/fx/tools/flow']].map(a=>`<a class="b g" href="${a[1]}" target="_blank" rel="noopener noreferrer">${a[0]} ${ic('ext')}</a>`).join('')}<button class="b g" data-v="apps">Lainnya</button></p></div>`}
+ else v.innerHTML=`<div class="card"><h3>Ekspor</h3><button class="b" id="et">${ic('dl')}Unduh TXT</button><button class="b" id="ej">${ic('dl')}Unduh JSON</button></div><div class="card"><h3>Impor JSON</h3><label for="imp">Pilih file .json (maks 1 MB)</label><input type="file" id="imp" accept=".json,application/json"></div><div class="card"><h3>Reset</h3><button class="b g" id="reset">Hapus proyek aktif</button></div>`}
+function scSum(){const e=$('scs');if(!e)return;const sc=scenes(),t=sc.reduce((a,b)=>a+b[1],0),d=+S.f.duration||0;e.innerHTML=`<b>${sc.length} scene, estimasi total ${t} detik (${Math.floor(t/60)} menit ${t%60} detik)</b>. Target durasi: ${d} detik. ${t&&t!==d?'<br><button class="b g" id="ap">Jadikan '+t+' detik sebagai durasi total</button>':''}`}
+function doReset(){if(confirm('Hapus semua data proyek aktif? Tindakan ini tidak dapat dibatalkan.')){S=fresh();save();view='home';render()}}
+document.addEventListener('click',e=>{if(e.target.id==='dlg')return $('dlg').close();if(!e.target.closest('.dd'))document.querySelectorAll('.pop').forEach(u=>u.hidden=true);const b=e.target.closest('button,a');if(!b)return;const rr=(f)=>{const y=scrollY;render();scrollTo(0,y);if(f)$('i_'+f)?.focus()};
+ if(b.dataset.v){view=b.dataset.v;$('sb').classList.remove('open');render();scrollTo(0,0)}
+ else if(b.dataset.open){const u=b.closest('.dd').querySelector('.pop'),h=u.hidden;document.querySelectorAll('.pop').forEach(x=>x.hidden=true);u.hidden=!h;b.setAttribute('aria-expanded',h)}
+ else if(b.dataset.pick){const[k,id]=b.dataset.pick.split(':');S.f[k]=id;save();rr(k)}
+ else if(b.dataset.pen){const k=b.dataset.pen;S.f[k]=S.f[k]==='kustom'?'':'kustom';save();rr(k)}
+ else if(b.dataset.info){const[k,id]=b.dataset.info.split(':'),o=opt(k,id),g=G[k+':'+id];$('dlg').innerHTML=`<button class="ib x" id="xd" type="button" aria-label="Tutup penjelasan">${ic('x')}</button><h3 id="dt">${esc(o.label)}</h3><p><b>Apa itu:</b> ${esc(o.description)}.</p>${LONG[id]?`<p>${esc(LONG[id])}</p>`:''}${o.frag?`<p><b>Potongan instruksi prompt:</b> <i>${esc(o.frag)}</i></p>`:''}<p><b>Pengaruh pada hasil:</b> Pilihan ini ditulis sebagai "${esc(F[k][1].split(' (')[0])}: ${esc(o.label)}" di prompt dan menjadi acuan AI eksternal.${g?' '+esc(g):''}</p>`;$('dlg').showModal()}
+ else if(b.id==='xd')$('dlg').close();
+ else if(b.id==='cp2'){navigator.clipboard.writeText(build(P.type,P.mode)).then(()=>toast('Prompt tersalin. Tempel di aplikasi AI.'),()=>toast('Salin otomatis gagal. Buka Prompt Generator lalu salin manual.'))}
+ else if(b.id==='menu')$('sb').classList.toggle('open');
+ else if(b.id==='reset')doReset();
+ else if(b.id==='ap'){S.f.duration=scenes().reduce((a,c)=>a+c[1],0);save();render()}
+ else if(b.id==='et'){dl(slug()+'.txt',txtExport(),'text/plain')}
+ else if(b.id==='ej'){S.prompts={[P.type]:build(P.type,P.mode)};dl(slug()+'.json',JSON.stringify(S,null,2),'application/json')}
+ else if(b.id==='cp'){navigator.clipboard.writeText($('out').value).then(()=>toast('Prompt tersalin'),()=>{$('out').select();toast('Salin otomatis gagal. Teks sudah dipilih, tekan Ctrl+C.')})}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.pop').forEach(u=>u.hidden=true)});
+document.addEventListener('input',e=>{const t=e.target,d=t.dataset;
+ if(d.s){t.parentElement.querySelector('select').innerHTML=selOpts(d.s,t.value);return}
+ if(d.m){S.f[d.m]=[...document.querySelectorAll(`[data-m="${d.m}"]:checked`)].map(x=>x.value);save();return}
+ if(d.k){S.f[d.k]=t.type==='number'?+t.value:t.value;if(t.tagName==='SELECT'){const o=opt(d.k,t.value);$('d_'+d.k).textContent=o?o.description:'';$('c_'+d.k).hidden=t.value!=='kustom'}save();if(/^scene|^duration/.test(d.k))scSum()}});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.id==='pt'||t.id==='pm'){P.type=$('pt').value;P.mode=$('pm').value;render()}
+ else if(t.id==='imp'&&t.files[0]){const f=t.files[0];if(f.size>1e6)return toast('File terlalu besar (maks 1 MB).');const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(j.app!=='Storybord Video AI'||typeof j.f!=='object'||Array.isArray(j.f))throw 0;if(confirm('Ganti proyek aktif dengan "'+(j.f.title||'tanpa judul').slice(0,60)+'"?')){S=j;save();view='m1';render();toast('Proyek dipulihkan')}}catch(x){toast('File tidak valid: bukan ekspor Storybord Video AI.')}};r.readAsText(f)}});
+$('sv').textContent=S.meta.updatedAt?'Draft dimuat':'';render();
+</script></body></html>
